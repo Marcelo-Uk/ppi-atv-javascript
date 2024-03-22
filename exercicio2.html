@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercício</title>
+</head>
+
+<body>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const caixa = document.getElementById("caixa");
+            const textoParagrafoInput = document.getElementById("texto-paragrafo");
+            const numeroParagrafoInput = document.getElementById("numero-paragrafo");
+            const btnInserir = document.getElementById("btnInserir");
+            const btnRemover = document.getElementById("BtnRemover");
+    
+            btnInserir.addEventListener("click", function () {
+                const textoParagrafo = textoParagrafoInput.value.trim();
+    
+                if (textoParagrafo === "") {
+                    alert("Por favor, insira um texto para o parágrafo.");
+                    return;
+                }
+    
+                const paragrafo = document.createElement("p");
+                paragrafo.textContent = textoParagrafo;
+    
+                caixa.appendChild(paragrafo);
+    
+                textoParagrafoInput.value = "";
+            });
+    
+            btnRemover.addEventListener("click", function () {
+                const numeroParagrafo = parseInt(numeroParagrafoInput.value.trim());
+    
+                if (isNaN(numeroParagrafo) || numeroParagrafo < 1 || numeroParagrafo > caixa.children.length) {
+                    alert("Por favor, insira um número de parágrafo válido.");
+                    return;
+                }
+    
+                caixa.removeChild(caixa.children[numeroParagrafo - 1]);
+                numeroParagrafoInput.value = "";
+            });
+        });
+    </script>
+    
+
+    <h1>Adicionar Parágrafos</h1>
+
+    <form onsubmit="return false">
+
+
+        <label>Digite o Texto do Parágrafo</label><br>
+        <input id="texto-paragrafo" type="text"><br>
+        <br>
+
+        <button id="btnInserir">Inserir Parágrafo</button><br><br>
+
+        <label>Digite o nº do parágrafo para remover</label><br>
+        <button id="BtnRemover">Remover Parágrafo</button>
+        <input id="numero-paragrafo" type="text" size="5">
+        <br>
+    </form>
+
+    <div id="caixa"></div>
+
+    <script>
+        //
+    </script>
+
+</body>
+
+</html>

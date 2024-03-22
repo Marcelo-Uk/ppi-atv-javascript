@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee+Hairline">
+  <title>Exercício</title>
+
+  <style>
+    #container {
+      width: 400px;
+      height: 400px;
+      position: relative;
+      background: yellow;
+      z-index: -2;
+    }
+
+    .bola,
+    #animate {
+      width: 30px;
+      height: 30px;
+      position: absolute;
+      background: red;
+      border-radius: 25px;
+    }
+
+    .bola {
+      background: green;
+      z-index: -1;
+    }
+
+    #caixa-info {
+      width: 400px;
+      text-align: center;
+      line-height: 30px;
+      font-family: 'Bungee Hairline';
+      font-weight: bold;
+    }
+
+    #caixa-info>div {
+      font-size: 18px;
+      width: 50%;
+      position: relative;
+      background: coral;
+      float: left;
+    }
+  </style>
+
+</head>
+
+<body>
+
+
+  <div id="container">
+    <div id="animate"></div>
+  </div>
+
+  <div id="caixa-info">
+    <div>Bolas Verdes</div>
+    <div>Pontos</div>
+    <div id="bolas-verdes">0</div>
+    <div id="pontos">0</div>
+  </div>
+
+
+
+  <script>
+    document.getElementById("animate").style.left = 0 + 'px';
+    document.getElementById("animate").style.top = 0 + 'px';
+
+    document.addEventListener("keydown", function (event) {
+        var caixa = document.getElementById('container');
+        var elem = document.getElementById("animate");
+        var tecla = event.keyCode;
+        var bolasVerdes = document.querySelectorAll('.bola');
+        var pontos = document.getElementById('pontos');
+        var bolaVermelha = document.getElementById('animate');
+        var totalBolasVerdes = document.getElementById('bolas-verdes');
+
+        event.preventDefault();
+
+        // Posição atual da bola vermelha
+        var left = parseInt(elem.style.left) || 0;
+        var top = parseInt(elem.style.top) || 0;
+
+        // Calcula a nova posição
+        var newLeft = left;
+        var newTop = top;
+
+        //37-Esquerda 38-Cima 39-Direita 40-Baixo    
+        switch (tecla) {
+            case 37:
+                newLeft = Math.max(0, left - 5);
+                break;
+
+            case 39:
+                newLeft = Math.min(caixa.offsetWidth - elem.offsetWidth, left + 5);
+                break;
+
+            case 38:
+                newTop = Math.max(0, top - 5);
+                break;
+
+            case 40:
+                newTop = Math.min(caixa.offsetHeight - elem.offsetHeight, top + 5);
+                break;
+        }
+
+        // Atualiza a posição apenas se estiver dentro dos limites
+        elem.style.left = newLeft + "px";
+        elem.style.top = newTop + "px";
+
+        // Verifica se a bola vermelha está na mesma posição de uma bola verde
+        bolasVerdes.forEach(function (bolaVerde) {
+            if (bolaVermelha.offsetTop === bolaVerde.offsetTop && bolaVermelha.offsetLeft === bolaVerde.offsetLeft) {
+                caixa.removeChild(bolaVerde);
+                // Incrementa a pontuação
+                pontos.textContent = parseInt(pontos.textContent) + 1;
+                // Atualiza o total de bolas verdes
+                totalBolasVerdes.textContent = caixa.querySelectorAll('.bola').length;
+            }
+        });
+    });
+
+    window.addEventListener("load", function (event) {
+        setInterval(function () {
+            var elem = document.getElementById("animate");
+            var caixa = document.getElementById('container');
+            var x = Math.floor(Math.random() * 370 / 5) * 5 + 5;
+            var y = Math.floor(Math.random() * 370 / 5) * 5 + 5;
+
+            var div = document.createElement("div");
+            var node = document.createTextNode("");
+
+            var a = document.createAttribute("class");
+            a.value = "bola";
+
+            div.style.left = x + 'px';
+            div.style.top = y + 'px';
+
+            div.setAttributeNode(a);
+            div.appendChild(node);
+
+            caixa.appendChild(div);
+
+            // Atualiza o total de bolas verdes
+            document.getElementById('bolas-verdes').textContent = caixa.querySelectorAll('.bola').length;
+
+        }, 3000);
+    });
+
+</script>
+
+  
+
+</body>
+
+</html>
